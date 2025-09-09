@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Freelancer-Client Chat</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+    h2 { text-align: center; }
+    #chat-box {
+      background: #fff;
+      border: 1px solid #ccc;
+      height: 400px;
+      overflow-y: auto;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .message { padding: 8px; margin: 5px; border-radius: 5px; }
+    .me { background: #d1ffd1; text-align: right; }
+    .other { background: #e0e0e0; text-align: left; }
+    #controls { display: flex; gap: 10px; }
+    input[type="text"] {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      background: #3498db;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover { background: #2980b9; }
+  </style>
+</head>
+<body>
+  <h2>Freelancer-Client Chat</h2>
+  <div id="chat-box"></div>
+  <div id="controls">
+    <input type="text" id="message" placeholder="Type a message..." />
+    <button id="send">Send</button>
+    <button id="save">Save Chat</button>
+  </div>
+
+  <!-- Firebase Auth & Firestore -->
+  <script type="module">
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-firestore.js";
+    import { auth, db } from './firebase-config.js';
+
+    const chatBox = document.getElementById("chat-box");
+    const messageInput = document.getElementById("message");
+    const sendBtn = document.getElementById("send");
+    const saveBtn = document.getElementById("save");
+
+    // Get client and freelancer IDs from URL
+    const params = new URLSearchParams(window.location.search);
+    const clientId = params.get("client");
+    const freelancerId = params.get("freelancer");
+
+    if (!clientId || !freelancerId) {
+      alert("Missing client or freelancer ID in URL");
+    }
+
+    const chatId = [clientId, freelancerId].sort().join("_");
+    const CHAT_KEY = `chat_${chatId}`;
+    let chatHistory = JSON.parse(localStorage.getItem(CHAT_KEY)) || [];
+    let currentUserRole = null;
+
+    // Render messages
+    function renderMessages() {
+      chatBox.innerHTML = "";
+      chatHistory.forEach(({ sender, text }) => {
+        const msgEl = document.createElement("div");
+        msgEl.className = "message " + (sender === currentUserRole ? "me" : "other");
+        msgEl.textContent = `${sender}: ${text}`;
+        chatBox.appendChild(msgEl);
+      });
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Send message
+    sendBtn.addEventListener("click", () => {
+      const text = messageInput.value.trim();
+      if (!text || !currentUserRole) return;
+
+      const message = { sender: currentUserRole, text };
+      chatHistory.push(message);
+      localStorage.setItem(CHAT_KEY, JSON.stringify(chatHistory));
+      messageInput.value = "";
+      renderMessages();
+    });
+
+    // Save chat to text file
+    saveBtn.addEventListener("click", () => {
+      const text = chatHistory.map(msg => `${msg.sender}: ${msg.text}`).join("\n");
+      const blob = new Blob([text], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "chat_history.txt";
+      link.click();
+    });
+
+    // Load user role on login
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        alert("Please login first.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (!userDoc.exists()) {
+        alert("User data not found.");
+        return;
+      }
+
+      const data = userDoc.data();
+      currentUserRole = data.role;
+      renderMessages();
+    });
+
+    // Live reload chat every 2 seconds
+    setInterval(() => {
+      chatHistory = JSON.parse(localStorage.getItem(CHAT_KEY)) || [];
+      renderMessages();
+    }, 2000);
+  </script>
+</body>
+</html>

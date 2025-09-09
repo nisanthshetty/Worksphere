@@ -1,0 +1,266 @@
+<!-- rating.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Review System</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    .review-container {
+        max-width: 600px;
+        margin: 50px auto;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .user-card {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+    }
+
+    .flag {
+        font-size: 1.5em;
+    }
+
+    .rating-overview {
+        padding: 20px;
+        border-top: 1px solid #eee;
+    }
+
+    .rating-score {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .score {
+        font-size: 2.5em;
+        margin-right: 10px;
+    }
+
+    .stars {
+        display: flex;
+    }
+
+    .star {
+        font-size: 1.5em;
+        color: #ddd;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+
+    .star.filled {
+        color: gold;
+    }
+
+    .review-form {
+        margin-top: 20px;
+    }
+
+    .skill-ratings {
+        margin-bottom: 20px;
+    }
+
+    .skill-rating-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .skill-rating-row label {
+        width: 200px;
+        margin-right: 15px;
+        font-weight: bold;
+    }
+
+    .rating-input {
+        display: flex;
+        flex: 1;
+    }
+
+    textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+    }
+
+    .submit-btn {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .submit-btn:hover {
+        background-color: #555;
+    }
+
+    .review-comment {
+        margin-top: 20px;
+        padding: 10px;
+        border-top: 1px solid #eee;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="review-container">
+    <div class="user-card">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Avatar" class="avatar" />
+      <h2 id="freelancer-name"><span class="flag"></span></h2>
+      <p id="freelancer-email" style="font-size: 0.9em; color: gray;"></p>
+
+      <div class="rating-overview">
+        <h3>Reviews</h3>
+        <div class="rating-score">
+          <span class="score" id="rating-score">0.0</span>
+          <div class="stars" id="rating-stars"></div>
+        </div>
+      </div>
+
+      <div class="review-form">
+        <div class="skill-ratings">
+          <h5>Rate the Freelancer's Skills</h5>
+
+          <!-- Skill Rows -->
+          <div class="skill-rating-row">
+            <label>Quality of Work</label>
+            <div class="rating-input" data-skill="1">
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star" data-value="5">★</span>
+            </div>
+          </div>
+
+          <div class="skill-rating-row">
+            <label>Timeliness</label>
+            <div class="rating-input" data-skill="2">
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star" data-value="5">★</span>
+            </div>
+          </div>
+
+          <div class="skill-rating-row">
+            <label>Communication</label>
+            <div class="rating-input" data-skill="3">
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star" data-value="5">★</span>
+            </div>
+          </div>
+
+          <div class="skill-rating-row">
+            <label>Professionalism</label>
+            <div class="rating-input" data-skill="4">
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star" data-value="5">★</span>
+            </div>
+          </div>
+        </div>
+
+        <textarea id="review-text" placeholder="Write your review here..."></textarea>
+        <button class="submit-btn">Submit Review</button>
+        <div id="review-comment" class="review-comment"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Get values from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const freelancerName = urlParams.get("freelancerName") || "Freelancer";
+    const freelancerEmail = urlParams.get("freelancerEmail") || "";
+
+    document.getElementById("freelancer-name").textContent = freelancerName;
+    document.getElementById("freelancer-email").textContent = freelancerEmail;
+
+    const skillRatings = { 1: 0, 2: 0, 3: 0, 4: 0 };
+    let totalReviews = 0;
+    let totalRating = 0;
+
+    function updateDisplay() {
+      const avg = totalReviews ? (totalRating / totalReviews).toFixed(1) : "0.0";
+      document.getElementById("rating-score").textContent = avg;
+
+      const starContainer = document.getElementById("rating-stars");
+      starContainer.innerHTML = "";
+      for (let i = 1; i <= 5; i++) {
+        const star = document.createElement("span");
+        star.className = "star" + (i <= Math.round(avg) ? " filled" : "");
+        star.textContent = "★";
+        starContainer.appendChild(star);
+      }
+    }
+
+    function handleStarClick(skill, value) {
+      skillRatings[skill] = value;
+      const stars = document.querySelectorAll(`.rating-input[data-skill="${skill}"] .star`);
+      stars.forEach((s, i) => {
+        s.classList.toggle("filled", i < value);
+      });
+    }
+
+    document.querySelectorAll(".rating-input .star").forEach(star => {
+      star.addEventListener("click", () => {
+        const skill = star.closest(".rating-input").dataset.skill;
+        const value = parseInt(star.dataset.value);
+        handleStarClick(skill, value);
+      });
+    });
+
+    document.querySelector(".submit-btn").addEventListener("click", () => {
+      const allRated = Object.values(skillRatings).every(r => r > 0);
+      if (!allRated) return alert("Please rate all skills.");
+
+      const reviewText = document.getElementById("review-text").value;
+      totalReviews++;
+      totalRating += Object.values(skillRatings).reduce((a, b) => a + b) / 4;
+
+      updateDisplay();
+      document.getElementById("review-comment").textContent = reviewText;
+
+      // Reset
+      Object.keys(skillRatings).forEach(skill => {
+        skillRatings[skill] = 0;
+        handleStarClick(skill, 0);
+      });
+      document.getElementById("review-text").value = "";
+    });
+
+    updateDisplay();
+  </script>
+  
+</body>
+</html>

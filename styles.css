@@ -1,0 +1,136 @@
+/* styles.css */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #4f46e5, #3b82f6);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-container {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-form h2 {
+  margin-bottom: 1.5rem;
+  color: #1e3a8a;
+  text-align: center;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  transition: 0.3s ease;
+}
+
+.auth-form input:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 5px #3b82f6;
+}
+
+.auth-form button[type="submit"] {
+  width: 100%;
+  padding: 0.75rem;
+  background: #3b82f6;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.auth-form button:hover {
+  background: #2563eb;
+}
+
+.switch-auth {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.switch-auth a {
+  color: #4f46e5;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.switch-auth a:hover {
+  text-decoration: underline;
+}
+
+.social-login {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.social-login p {
+  margin-bottom: 0.5rem;
+  color: #444;
+}
+
+.google-btn,
+.facebook-btn {
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 0.6rem;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.google-btn {
+  background-color: #db4437;
+}
+
+.google-btn:hover {
+  background-color: #c23321;
+}
+
+.facebook-btn {
+  background-color: #1877f2;
+}
+
+.facebook-btn:hover {
+  background-color: #125ecf;
+}
+.user-role {
+  margin-bottom: 1em;
+}
+.user-role label {
+  margin-right: 1em;
+  font-weight: 500;
+}
+.auth-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 2em;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+.auth-form input, .auth-form button {
+  display: block;
+  width: 100%;
+  margin-bottom: 1em;
+  padding: 0.7em;
+}

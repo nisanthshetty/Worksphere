@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notifications</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .notification {
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background: #f9f9f9;
+    }
+    .actions button {
+      margin-right: 10px;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .accept {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .deny {
+      background-color: #f44336;
+      color: white;
+    }
+    .status {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Hire Requests</h1>
+  <div id="notifications-list"></div>
+
+  <script type="module">
+    import {
+      auth,
+      db,
+      onAuthStateChanged,
+      collection,
+      query,
+      where,
+      onSnapshot,
+      updateDoc,
+      doc
+    } from './firebase-config.js';
+
+    const list = document.getElementById("notifications-list");
+
+    function renderNotification(docSnapshot) {
+      const data = docSnapshot.data();
+      const id = docSnapshot.id;
+
+      const container = document.createElement("div");
+      container.className = "notification";
+
+      const message = document.createElement("p");
+      message.innerHTML = `<strong>From:</strong> ${data.fromEmail}<br>${data.message}`;
+
+      const timestamp = new Date(data.timestamp.seconds * 1000).toLocaleString();
+      const time = document.createElement("p");
+      time.innerHTML = `<small><em>${timestamp}</em></small>`;
+
+      container.appendChild(message);
+      container.appendChild(time);
+
+      if (data.status) {
+        const statusText = document.createElement("div");
+        statusText.className = "status";
+        statusText.textContent = `Status: ${data.status.toUpperCase()}`;
+        container.appendChild(statusText);
+      } else {
+        const actionDiv = document.createElement("div");
+        actionDiv.className = "actions";
+
+        const acceptBtn = document.createElement("button");
+        acceptBtn.textContent = "Accept";
+        acceptBtn.className = "accept";
+        acceptBtn.onclick = async () => {
+          await updateDoc(doc(db, "notifications", id), {
+            status: "accepted"
+          });
+        };
+
+        const denyBtn = document.createElement("button");
+        denyBtn.textContent = "Deny";
+        denyBtn.className = "deny";
+        denyBtn.onclick = async () => {
+          await updateDoc(doc(db, "notifications", id), {
+            status: "denied"
+          });
+        };
+
+        actionDiv.appendChild(acceptBtn);
+        actionDiv.appendChild(denyBtn);
+        container.appendChild(actionDiv);
+      }
+
+      list.appendChild(container);
+    }
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        const q = query(
+          collection(db, "notifications"),
+          where("toUserId", "==", user.uid)
+        );
+
+        onSnapshot(q, snapshot => {
+          list.innerHTML = "";
+          snapshot.forEach(docSnapshot => {
+            renderNotification(docSnapshot);
+          });
+        });
+      } else {
+        list.innerHTML = "<p>Please log in to view your notifications.</p>";
+      }
+    });
+  </script>
+</body>
+</html>

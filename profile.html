@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Freelancer Profile | WorkSphere</title>
+  <style>
+    body, html {
+      margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; color: #333;
+    }
+    .container {
+      max-width: 900px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 30px;
+    }
+    .profile-header {
+      display: flex; align-items: center; gap: 30px; border-bottom: 1px solid #ddd; padding-bottom: 20px;
+    }
+    .profile-pic {
+      width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #3f51b5;
+    }
+    .profile-info {
+      flex-grow: 1;
+    }
+    .profile-name {
+      font-size: 28px; font-weight: 700; margin-bottom: 5px;
+    }
+    .profile-tagline {
+      font-size: 16px; color: #666;
+    }
+    .edit-btn {
+      background: #3f51b5; color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer;
+      font-weight: 600; transition: background 0.3s ease;
+    }
+    .edit-btn:hover {
+      background: #2c3e9c;
+    }
+    .section {
+      margin-top: 30px;
+    }
+    .section h2 {
+      border-bottom: 2px solid #3f51b5; padding-bottom: 8px; font-weight: 600; color: #3f51b5;
+    }
+    .section p, .section ul {
+      margin-top: 15px; line-height: 1.6;
+    }
+    ul.skills-list {
+      list-style: none; padding: 0; display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    ul.skills-list li {
+      background: #e0e7ff; color: #3f51b5; padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 14px;
+    }
+    .editable {
+      border-bottom: 1px dotted #888;
+      cursor: pointer;
+      padding: 2px 4px;
+    }
+    .editable:focus {
+      outline: none;
+      background: #e8eaf6;
+      border-bottom: 1px solid #3f51b5;
+    }
+    @media(max-width: 600px) {
+      .profile-header {
+        flex-direction: column; align-items: center; text-align: center;
+      }
+      .profile-info {
+        margin-top: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="profile-header">
+    <img id="profile-pic" class="profile-pic" src="default-avatar.png" alt="Profile Picture" />
+    <div class="profile-info">
+      <h1 id="profile-name" class="profile-name editable" contenteditable="true" title="Click to edit your name">Your Name</h1>
+      <div id="profile-tagline" class="profile-tagline editable" contenteditable="true" title="Click to edit your tagline">Your professional tagline here</div>
+      <div style="margin-top: 10px;">
+        <strong>Rating:</strong>
+        <span id="profile-rating" class="editable" contenteditable="true" title="Click to edit your rating">4.5</span>
+      </div>
+    </div>
+    <button id="save-btn" class="edit-btn">Save Profile</button>
+  </div>
+
+  <div class="section">
+    <h2>Overview</h2>
+    <p id="profile-overview" class="editable" contenteditable="true" title="Click to edit overview">
+      Briefly describe yourself, your skills, and what you offer clients.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>Skills</h2>
+    <ul id="skills-list" class="skills-list">
+      <li class="editable" contenteditable="true">Skill 1</li>
+      <li class="editable" contenteditable="true">Skill 2</li>
+    </ul>
+    <button id="add-skill-btn" class="edit-btn" style="margin-top:10px;">Add Skill</button>
+  </div>
+
+  <div class="section">
+    <h2>Experience</h2>
+    <ul id="experience-list" class="experience-list">
+      <li class="editable" contenteditable="true">Your work experience 1</li>
+    </ul>
+    <button id="add-experience-btn" class="edit-btn" style="margin-top:10px;">Add Experience</button>
+  </div>
+
+  <div class="section">
+    <h2>Portfolio</h2>
+    <ul id="portfolio-list" class="portfolio-list">
+      <li class="editable" contenteditable="true"><a href="#" target="_blank">Project 1</a></li>
+    </ul>
+    <button id="add-portfolio-btn" class="edit-btn" style="margin-top:10px;">Add Portfolio Item</button>
+  </div>
+
+  <div class="section">
+    <h2>Education</h2>
+    <ul id="education-list" class="education-list">
+      <li class="editable" contenteditable="true">Degree or Certification 1</li>
+    </ul>
+    <button id="add-education-btn" class="edit-btn" style="margin-top:10px;">Add Education</button>
+  </div>
+
+  <div style="text-align:right; margin-top: 30px;">
+    <button id="logout-btn" class="edit-btn" style="background:#f44336;">Logout</button>
+  </div>
+
+</div>
+
+<script type="module">
+  import {
+    auth, db, doc, getDoc, setDoc, updateDoc,
+    onAuthStateChanged, updateProfile, signOut
+  } from './firebase-config.js';
+
+  const profilePic = document.getElementById('profile-pic');
+  const profileName = document.getElementById('profile-name');
+  const profileTagline = document.getElementById('profile-tagline');
+  const profileOverview = document.getElementById('profile-overview');
+  const profileRating = document.getElementById('profile-rating');
+  const skillsList = document.getElementById('skills-list');
+  const experienceList = document.getElementById('experience-list');
+  const portfolioList = document.getElementById('portfolio-list');
+  const educationList = document.getElementById('education-list');
+  const saveBtn = document.getElementById('save-btn');
+
+  function getListItemsText(listEl) {
+    const items = [];
+    listEl.querySelectorAll('li').forEach(li => {
+      items.push(li.textContent.trim());
+    });
+    return items;
+  }
+
+  function populateList(listEl, items) {
+    listEl.innerHTML = '';
+    items.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = item;
+      li.contentEditable = "true";
+      li.classList.add('editable');
+      listEl.appendChild(li);
+    });
+  }
+
+  function addListItem(listEl) {
+    const li = document.createElement('li');
+    li.textContent = 'New item';
+    li.contentEditable = "true";
+    li.classList.add('editable');
+    listEl.appendChild(li);
+    li.focus();
+  }
+
+  document.getElementById('add-skill-btn').onclick = () => addListItem(skillsList);
+  document.getElementById('add-experience-btn').onclick = () => addListItem(experienceList);
+  document.getElementById('add-portfolio-btn').onclick = () => addListItem(portfolioList);
+  document.getElementById('add-education-btn').onclick = () => addListItem(educationList);
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      window.location.href = 'login.html';
+      return;
+    }
+    const userDocRef = doc(db, 'users', user.uid);
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (userDocSnap.exists()) {
+      const data = userDocSnap.data();
+      profileName.textContent = data.displayName || 'Your Name';
+      profileTagline.textContent = data.tagline || 'Your professional tagline here';
+      profileOverview.textContent = data.overview || 'Briefly describe yourself.';
+      profileRating.textContent = data.rating !== undefined ? data.rating : '4.5';
+      profilePic.src = data.photoURL || 'default-avatar.png';
+
+      populateList(skillsList, data.skills || []);
+      populateList(experienceList, data.experience || []);
+      populateList(portfolioList, data.portfolio || []);
+      populateList(educationList, data.education || []);
+    } else {
+      await setDoc(userDocRef, {
+        displayName: user.displayName || 'Your Name',
+        tagline: '',
+        overview: '',
+        rating: 4.5,
+        photoURL: user.photoURL || '',
+        skills: [],
+        experience: [],
+        portfolio: [],
+        education: []
+      });
+      location.reload();
+    }
+  });
+
+  saveBtn.onclick = async () => {
+    const user = auth.currentUser;
+    if (!user) return alert('User not logged in');
+
+    const ratingText = profileRating.textContent.trim();
+    const rating = parseFloat(ratingText);
+
+    if (isNaN(rating) || rating < 0 || rating > 5) {
+      alert('Please enter a valid rating between 0 and 5.');
+      return;
+    }
+
+    const userDocRef = doc(db, 'users', user.uid);
+    try {
+      await updateDoc(userDocRef, {
+        displayName: profileName.textContent.trim(),
+        tagline: profileTagline.textContent.trim(),
+        overview: profileOverview.textContent.trim(),
+        rating: rating,
+        skills: getListItemsText(skillsList),
+        experience: getListItemsText(experienceList),
+        portfolio: getListItemsText(portfolioList),
+        education: getListItemsText(educationList)
+      });
+
+      await updateProfile(user, { displayName: profileName.textContent.trim() });
+      alert('Profile saved successfully!');
+    } catch (error) {
+      alert('Error saving profile: ' + error.message);
+    }
+  };
+
+  document.getElementById('logout-btn').onclick = async () => {
+    try {
+      await signOut(auth);
+      window.location.href = 'login.html';
+    } catch (error) {
+      alert('Logout failed: ' + error.message);
+    }
+  };
+</script>
+
+</body>
+</html>

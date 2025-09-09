@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="WorkSphere - Find top freelancers or freelance jobs in web development, design, marketing and more">
+  <title>WorkSphere | Hire Freelancers or Find Freelance Jobs</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #4a6bff;
+      --secondary-color: #6c757d;
+      --accent-color: #ff6b6b;
+      --light-color: #f8f9fa;
+      --dark-color: #343a40;
+      --success-color: #28a745;
+      --border-radius: 8px;
+      --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 10px 5%;
+      background-color: rgba(255, 255, 255, 0.9);
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 1001;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .top-bar-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .notification-icon {
+      position: relative;
+      font-size: 1.2rem;
+      color: var(--dark-color);
+      cursor: pointer;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: var(--accent-color);
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      object-fit: cover;
+      border: 2px solid var(--primary-color);
+      transition: var(--transition);
+    }
+
+    .profile-icon:hover {
+      transform: scale(1.05);
+    }
+
+    .parallax-container {
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                  url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') no-repeat center center;
+      background-size: cover;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      text-align: center;
+      padding: 0 5%;
+      padding-top: 140px; /* to push down the content below navbar */
+
+    }
+
+    .navbar {
+  position: fixed;
+  top: 60px; /* below the top-bar */
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5); /* optional background for readability */
+  padding: 2px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+    .logo img {
+      max-width: 150px;
+      height: auto;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .logo img:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+
+    }
+
+    .nav-links li {
+      position: relative;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: white;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: var(--transition);
+      padding: 5px 0;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-color);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary-color);
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .cta-button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 1rem;
+    }
+
+    .cta-button:hover {
+      background-color: #3a5bef;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(74, 107, 255, 0.4);
+    }
+
+    .hero-text {
+      color: white;
+      z-index: 2;
+      margin-top: 80px;
+      max-width: 800px;
+    }
+
+    .hero-text h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .hero-text p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      opacity: 0.9;
+    }
+
+    .search-container {
+      position: relative;
+      margin-top: 30px;
+      z-index: 2;
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    .search-wrapper {
+      display: flex;
+      background: white;
+      border-radius: 50px;
+      overflow: hidden;
+      box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    #search-input {
+      flex: 1;
+      padding: 18px 25px;
+      border: none;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .search-button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0 30px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .search-button:hover {
+      background-color: #3a5bef;
+    }
+
+    .search-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background-color: white;
+      box-shadow: var(--box-shadow);
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
+      max-height: 300px;
+      overflow-y: auto;
+      display: none;
+      list-style: none;
+      z-index: 1000;
+    }
+
+    .search-results li {
+      padding: 12px 25px;
+      border-bottom: 1px solid #f0f0f0;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: left;
+    }
+
+    .search-results li:hover {
+      background-color: #f7f7f7;
+    }
+
+    .search-results li:last-child {
+      border-bottom: none;
+    }
+
+    .stats-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 50px;
+      flex-wrap: wrap;
+    }
+
+    .stat-box {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 20px 30px;
+      border-radius: var(--border-radius);
+      text-align: center;
+      min-width: 150px;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .section {
+      padding: 80px 5%;
+      text-align: center;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: var(--dark-color);
+    }
+
+    .section-subtitle {
+      font-size: 1.1rem;
+      color: var(--secondary-color);
+      max-width: 700px;
+      margin: 0 auto 50px;
+    }
+
+    .services-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .service-box {
+      background-color: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      transition: var(--transition);
+      text-align: left;
+    }
+
+    .service-box:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+    }
+
+    .service-image {
+      height: 180px;
+      overflow: hidden;
+    }
+
+    .service-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .service-box:hover .service-image img {
+      transform: scale(1.1);
+    }
+
+    .service-content {
+      padding: 20px;
+    }
+
+    .service-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--dark-color);
+    }
+
+    .service-description {
+      font-size: 0.9rem;
+      color: var(--secondary-color);
+      margin-bottom: 15px;
+    }
+
+    .service-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+
+    .service-rating {
+      color: #ffc107;
+    }
+
+    .service-price {
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    .image-gallery {
+      background-color: #f9f9f9;
+    }
+
+    .gallery-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+
+    .image-box {
+      position: relative;
+      height: 300px;
+      overflow: hidden;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
+    }
+
+    .image-box:hover {
+      transform: translateY(-5px);
+      cursor: pointer;
+    }
+
+    .image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .image-box:hover img {
+      transform: scale(1.05);
+    }
+
+    .overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+      padding: 20px;
+      color: white;
+    }
+
+    .gallery-item-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .gallery-item-price {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    .testimonials {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .testimonials .section-title {
+      color: white;
+    }
+
+    .testimonials .section-subtitle {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .testimonial-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 30px;
+      padding: 20px 0;
+      scroll-snap-type: x mandatory;
+    }
+
+    .testimonial-card {
+      flex: 0 0 auto;
+      width: 350px;
+      background-color: white;
+      border-radius: var(--border-radius);
+      padding: 30px;
+      color: var(--dark-color);
+      scroll-snap-align: start;
+      box-shadow: var(--box-shadow);
+    }
+
+    .testimonial-text {
+      font-style: italic;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .testimonial-text::before {
+      content: '"';
+      font-size: 3rem;
+      color: rgba(74, 107, 255, 0.2);
+      position: absolute;
+      top: -20px;
+      left: -10px;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .author-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .author-info h4 {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .author-info p {
+      font-size: 0.9rem;
+      color: var(--secondary-color);
+    }
+
+    .cta-section {
+      background: linear-gradient(135deg, var(--primary-color), #6c5ce7);
+      color: white;
+      text-align: center;
+      padding: 80px 5%;
+    }
+
+    .cta-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .cta-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .cta-text {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      opacity: 0.9;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .cta-button.outline {
+      background-color: transparent;
+      border: 2px solid white;
+    }
+
+    .cta-button.outline:hover {
+      background-color: white;
+      color: var(--primary-color);
+    }
+
+    .footer {
+      background-color: var(--dark-color);
+      color: white;
+      padding: 60px 5% 30px;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-column h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .footer-column h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background-color: var(--primary-color);
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: #adb5bd;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: white;
+      padding-left: 5px;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-icons a {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.1);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .social-icons a:hover {
+      background-color: var(--primary-color);
+      transform: translateY(-3px);
+    }
+
+    .copyright {
+      font-size: 0.9rem;
+      color: #adb5bd;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 992px) {
+      .navbar {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+      }
+
+      .hero-text h1 {
+        font-size: 2.2rem;
+      }
+
+      .search-wrapper {
+        flex-direction: column;
+        border-radius: var(--border-radius);
+      }
+
+      #search-input {
+        padding: 15px;
+      }
+
+      .search-button {
+        padding: 12px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .section {
+        padding: 60px 5%;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .stats-container {
+        gap: 15px;
+      }
+
+      .stat-box {
+        padding: 15px;
+        min-width: 120px;
+      }
+
+      .stat-number {
+        font-size: 1.8rem;
+      }
+
+      .testimonial-card {
+        width: 280px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .hero-text h1 {
+        font-size: 1.8rem;
+      }
+
+      .hero-text p {
+        font-size: 1rem;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-bar-actions">
+      <div class="notification-icon">
+        <i class="fas fa-bell"></i>
+        <span class="notification-badge">3</span>
+      </div>
+      <img src="default-avatar.png" alt="Profile" id="profile-icon" class="profile-icon" />
+    </div>
+  </div>
+
+  <div class="parallax-container">
+    <div class="navbar">
+      <div class="logo">
+        <img src="https://ideogram.ai/assets/progressive-image/balanced/response/QqzmWQkuSruO-YCfqmniSg" alt="WorkSphere Logo" id="logo-button">
+      </div>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="findjob.html">Find Jobs</a></li>
+        <li><a href="notifications.html">notifications</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="maps.html">Maps</a></li>
+      </ul>
+      <button class="cta-button">Post a Project</button>
+    </div>
+    
+    <div class="hero-text">
+      <h1>Find the perfect freelance services for your business</h1>
+      <p>Join millions of people using WorkSphere to turn their ideas into reality.</p>
+    </div>
+
+    <div class="search-container">
+      <div class="search-wrapper">
+        <input type="text" id="search-input" placeholder="What service are you looking for today?">
+        <button class="search-button">
+          <i class="fas fa-search"></i> Search
+        </button>
+      </div>
+      <ul id="search-results" class="search-results"></ul>
+    </div>
+
+    <div class="stats-container">
+      <div class="stat-box">
+        <div class="stat-number">5M+</div>
+        <div class="stat-label">Freelancers</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number">2M+</div>
+        <div class="stat-label">Clients</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number">10M+</div>
+        <div class="stat-label">Projects Completed</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number">$1B+</div>
+        <div class="stat-label">Paid to Freelancers</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">Popular Services</h2>
+    <p class="section-subtitle">Browse the most in-demand services on WorkSphere</p>
+    
+    <div class="services-container">
+      <div class="service-box">
+        <div class="service-image">
+          <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Website Development">
+        </div>
+        <div class="service-content">
+          <h3 class="service-title">Website Development</h3>
+          <p class="service-description">Custom websites tailored to your business needs</p>
+          <div class="service-meta">
+            <div class="service-rating">
+              <i class="fas fa-star"></i> 4.9 (1.2k)
+            </div>
+            <div class="service-price">From $500</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="service-box">
+        <div class="service-image">
+          <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Graphic Design">
+        </div>
+        <div class="service-content">
+          <h3 class="service-title">Graphic Design</h3>
+          <p class="service-description">Stunning visuals for your brand identity</p>
+          <div class="service-meta">
+            <div class="service-rating">
+              <i class="fas fa-star"></i> 4.8 (850)
+            </div>
+            <div class="service-price">From $150</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="service-box">
+        <div class="service-image">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Digital Marketing">
+        </div>
+        <div class="service-content">
+          <h3 class="service-title">Digital Marketing</h3>
+          <p class="service-description">Grow your online presence and reach</p>
+          <div class="service-meta">
+            <div class="service-rating">
+              <i class="fas fa-star"></i> 4.7 (1.5k)
+            </div>
+            <div class="service-price">From $300</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="service-box">
+        <div class="service-image">
+          <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80" alt="Content Writing">
+        </div>
+        <div class="service-content">
+          <h3 class="service-title">Content Writing</h3>
+          <p class="service-description">Engaging content that converts visitors</p>
+          <div class="service-meta">
+            <div class="service-rating">
+              <i class="fas fa-star"></i> 4.8 (980)
+            </div>
+            <div class="service-price">From $100</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section image-gallery">
+    <h2 class="section-title">Featured Freelancers</h2>
+    <p class="section-subtitle">Top-rated professionals ready to work on your projects</p>
+    
+    <div class="gallery-container">
+      <div class="image-box">
+        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Freelancer 1">
+        <div class="overlay">
+          <h3 class="gallery-item-title">Sarah Johnson</h3>
+          <p class="gallery-item-price">Web Developer | ★4.9 (245 reviews)</p>
+        </div>
+      </div>
+      
+      <div class="image-box">
+        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Freelancer 2">
+        <div class="overlay">
+          <h3 class="gallery-item-title">Michael Chen</h3>
+          <p class="gallery-item-price">Graphic Designer | ★4.8 (187 reviews)</p>
+        </div>
+      </div>
+      
+      <div class="image-box">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Freelancer 3">
+        <div class="overlay">
+          <h3 class="gallery-item-title">David Rodriguez</h3>
+          <p class="gallery-item-price">SEO Specialist | ★4.7 (156 reviews)</p>
+        </div>
+      </div>
+      
+      <div class="image-box">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1976&q=80" alt="Freelancer 4">
+        <div class="overlay">
+          <h3 class="gallery-item-title">Emily Wilson</h3>
+          <p class="gallery-item-price">Content Writer | ★4.9 (210 reviews)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section testimonials">
+    <h2 class="section-title">What Our Clients Say</h2>
+    <p class="section-subtitle">Trusted by businesses and freelancers worldwide</p>
+    
+    <div class="testimonial-container">
+      <div class="testimonial-card">
+        <p class="testimonial-text">WorkSphere has completely transformed how we find talent. We've hired 5 freelancers through the platform and each one has delivered exceptional work.</p>
+        <div class="testimonial-author">
+          <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Client" class="author-avatar">
+          <div class="author-info">
+            <h4>Jessica Thompson</h4>
+            <p>CEO, TechSolutions Inc.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="testimonial-card">
+        <p class="testimonial-text">As a freelancer, WorkSphere has given me the opportunity to work with amazing clients from around the world. The platform is easy to use and payments are always on time.</p>
+        <div class="testimonial-author">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Freelancer" class="author-avatar">
+          <div class="author-info">
+            <h4>Robert Johnson</h4>
+            <p>Full Stack Developer</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="testimonial-card">
+        <p class="testimonial-text">The quality of freelancers on WorkSphere is outstanding. We found a marketing specialist who helped us double our online leads in just 3 months.</p>
+        <div class="testimonial-author">
+          <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Client" class="author-avatar">
+          <div class="author-info">
+            <h4>Maria Garcia</h4>
+            <p>Marketing Director</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2 class="cta-title">Ready to get started?</h2>
+      <p class="cta-text">Join thousands of businesses and freelancers who are already working together on WorkSphere.</p>
+      <div class="cta-buttons">
+        <button class="cta-button">Hire a Freelancer</button>
+        <button class="cta-button outline">Apply as Freelancer</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-column">
+        <h3>WorkSphere</h3>
+        <p>Connecting businesses with top freelance talent worldwide since 2024.</p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      
+      <div class="footer-column">
+        <h3>For Clients</h3>
+        <ul class="footer-links">
+          <li><a href="#">How to Hire</a></li>
+          <li><a href="#">Talent Marketplace</a></li>
+          <li><a href="#">Project Catalog</a></li>
+          <li><a href="#">Hire Worldwide</a></li>
+          <li><a href="#">Pricing</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h3>For Freelancers</h3>
+        <ul class="footer-links">
+          <li><a href="#">How to Find Work</a></li>
+          <li><a href="#">Freelance Projects</a></li>
+          <li><a href="#">Freelance Jobs</a></li>
+          <li><a href="#">Certifications</a></li>
+          <li><a href="#">Freelance Resources</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h3>Company</h3>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="copyright">
+        © 2024 WorkSphere International Ltd. All rights reserved.
+      </div>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-apple"></i></a>
+        <a href="#"><i class="fab fa-google-play"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-auth.js";
+    import { auth } from "./firebase-config.js";
+
+    const profileIcon = document.getElementById("profile-icon");
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Set profile photo if available
+        if (user.photoURL) {
+          profileIcon.src = user.photoURL;
+        }
+
+        // Store data in sessionStorage to use in profile page
+        sessionStorage.setItem("userName", user.displayName || "Not provided");
+        sessionStorage.setItem("userEmail", user.email);
+        sessionStorage.setItem("userPhoto", user.photoURL || "default-avatar.png");
+      } else {
+        // If not logged in, redirect to login
+        window.location.href = "login.html";
+      }
+    });
+
+    // On click, go to profile page
+    profileIcon.addEventListener("click", () => {
+      window.location.href = "profile.html";
+    });
+
+    // Search functionality
+    document.getElementById('logo-button').addEventListener('click', function() {
+      window.location.href = '#';
+    });
+
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+    const searchButton = document.querySelector('.search-button');
+
+    const servicesData = [
+      { name: "Web Development", category: "Development & IT" },
+      { name: "Mobile App Development", category: "Development & IT" },
+      { name: "Graphic Design", category: "Design & Creative" },
+      { name: "Logo Design", category: "Design & Creative" },
+      { name: "Content Writing", category: "Writing & Translation" },
+      { name: "SEO Services", category: "Digital Marketing" },
+      { name: "Social Media Marketing", category: "Digital Marketing" },
+      { name: "Video Editing", category: "Video & Animation" },
+      { name: "Voice Over", category: "Video & Animation" },
+      { name: "Data Entry", category: "Admin Support" }
+    ];
+
+    function displaySearchResults(query) {
+      searchResults.innerHTML = '';
+      
+      if (query.length < 2) {
+        searchResults.style.display = 'none';
+        return;
+      }
+      
+      const filteredData = servicesData.filter(item => 
+        item.name.toLowerCase().includes(query.toLowerCase()) || 
+        item.category.toLowerCase().includes(query.toLowerCase())
+      );
+
+      if (filteredData.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = 'No results found';
+        li.style.pointerEvents = 'none';
+        searchResults.appendChild(li);
+      } else {
+        filteredData.forEach(item => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <strong>${item.name}</strong>
+            <span style="color: #6c757d; font-size: 0.9em;">${item.category}</span>
+          `;
+          li.addEventListener('click', () => {
+            searchInput.value = item.name;
+            searchResults.style.display = 'none';
+            // Redirect to search results page or perform search
+            window.location.href = `search.html?q=${encodeURIComponent(item.name)}`;
+          });
+          searchResults.appendChild(li);
+        });
+      }
+      searchResults.style.display = 'block';
+    }
+
+    searchInput.addEventListener('input', () => {
+      displaySearchResults(searchInput.value.trim());
+    });
+
+    searchButton.addEventListener('click', () => {
+      const query = searchInput.value.trim();
+      if (query.length >= 2) {
+        window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+      }
+    });
+
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const query = searchInput.value.trim();
+        if (query.length >= 2) {
+          window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+        }
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+        searchResults.style.display = 'none';
+      }
+    });
+
+    // Testimonial slider
+    const testimonialContainer = document.querySelector('.testimonial-container');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    testimonialContainer.addEventListener('mousedown', (e) => {
+      isDown = true;
+      startX = e.pageX - testimonialContainer.offsetLeft;
+      scrollLeft = testimonialContainer.scrollLeft;
+    });
+
+    testimonialContainer.addEventListener('mouseleave', () => {
+      isDown = false;
+    });
+
+    testimonialContainer.addEventListener('mouseup', () => {
+      isDown = false;
+    });
+
+    testimonialContainer.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - testimonialContainer.offsetLeft;
+      const walk = (x - startX) * 2;
+      testimonialContainer.scrollLeft = scrollLeft - walk;
+    });
+
+    // Mobile touch events for testimonial slider
+    testimonialContainer.addEventListener('touchstart', (e) => {
+      isDown = true;
+      startX = e.touches[0].pageX - testimonialContainer.offsetLeft;
+      scrollLeft = testimonialContainer.scrollLeft;
+    });
+
+    testimonialContainer.addEventListener('touchend', () => {
+      isDown = false;
+    });
+
+    testimonialContainer.addEventListener('touchmove', (e) => {
+      if (!isDown) return;
+      const x = e.touches[0].pageX - testimonialContainer.offsetLeft;
+      const walk = (x - startX) * 2;
+      testimonialContainer.scrollLeft = scrollLeft - walk;
+    });
+  </script>
+</body>
+</html>

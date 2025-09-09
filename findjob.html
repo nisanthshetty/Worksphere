@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Listings</title>
+    <link rel="stylesheet" href="">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+        }
+
+        header {
+            position: relative;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .parallax {
+            position: relative;
+            background-image: url('your-image.jpg');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .parallax h1 {
+            position: relative;
+            z-index: 2;
+            font-size: 3em;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin: 0;
+            padding: 0 20px;
+        }
+
+        .parallax::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .search-container, .filter-container {
+            position: relative;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #search {
+            width: 80%;
+            padding: 15px;
+            border-radius: 30px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            margin: 0 auto;
+            display: block;
+            outline: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-container select {
+            width: 80%;
+            padding: 15px;
+            border-radius: 30px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            margin: 20px auto;
+            display: block;
+            outline: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        main {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .job-listings {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .job-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .job-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .job-card h2 {
+            margin-top: 0;
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .job-card p {
+            color: #666;
+            font-size: 0.95em;
+            margin: 5px 0;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            margin: 15px 0 0;
+            width: 100%;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            margin-top: 40px;
+            font-size: 0.9em;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="parallax">
+            <h1>Find Your Dream Job</h1>
+        </div>
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Search jobs...">
+        </div>
+        <div class="filter-container">
+            <select id="categoryFilter">
+                <option value="">All Categories</option>
+                <option value="Technical and Engineering">Technical and Engineering Jobs</option>
+                <option value="Creative and Media">Creative and Media Jobs</option>
+                <option value="Business and Support">Business and Support Jobs</option>
+            </select>
+        </div>
+    </header>
+    
+    <main>
+        <section class="job-listings" id="job-listings">
+            <!-- Job cards will be injected here by JavaScript -->
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Job Listings. All Rights Reserved.</p>
+    </footer>
+    <script>
+        // Sample job data with categories
+        const jobs = [
+            { title: "Web Developer Needed", company: "Tech Innovations", location: "Remote", pay: "$50/hr", category: "Technical and Engineering" },
+            { title: "Graphic Designer", company: "Design Studio", location: "New York, NY", pay: "$40/hr", category: "Creative and Media" },
+            { title: "Content Writer", company: "WriteWell", location: "Remote", pay: "$30/hr", category: "Creative and Media" },
+            { title: "SEO Specialist", company: "Marketing Pros", location: "San Francisco, CA", pay: "$55/hr", category: "Technical and Engineering" },
+            { title: "Product Manager", company: "Innovatech", location: "Remote", pay: "$70/hr", category: "Business and Support" },
+            { title: "Data Analyst", company: "Data Insights", location: "Chicago, IL", pay: "$60/hr", category: "Technical and Engineering" },
+            { title: "UI/UX Designer", company: "Creative Minds", location: "Los Angeles, CA", pay: "$45/hr", category: "Creative and Media" },
+            { title: "DevOps Engineer", company: "Cloud Solutions", location: "Seattle, WA", pay: "$65/hr", category: "Technical and Engineering" },
+            { title: "Marketing Coordinator", company: "Brandify", location: "Austin, TX", pay: "$35/hr", category: "Business and Support" },
+            { title: "HR Specialist", company: "People Pros", location: "Miami, FL", pay: "$40/hr", category: "Business and Support" }
+        ];
+
+        // Function to create job card HTML
+        const createJobCard = (job) => `
+            <div class="job-card">
+                <h2>${job.title}</h2>
+                <p>Company: ${job.company}</p>
+                <p>Location: ${job.location}</p>
+                <p>Pay: ${job.pay}</p>
+                <button>View Details</button>
+            </div>
+        `;
+
+        // Function to render jobs
+        const renderJobs = (jobs) => {
+            const jobListings = document.getElementById('job-listings');
+            jobListings.innerHTML = jobs.map(createJobCard).join('');
+        };
+
+        // Function to filter jobs based on search input and category
+        const filterJobs = () => {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const selectedCategory = document.getElementById('categoryFilter').value;
+
+            const filteredJobs = jobs.filter(job => {
+                const matchesCategory = selectedCategory ? job.category === selectedCategory : true;
+                const matchesSearch = job.title.toLowerCase().includes(searchTerm) || 
+                                      job.company.toLowerCase().includes(searchTerm) ||
+                                      job.location.toLowerCase().includes(searchTerm);
+                return matchesCategory && matchesSearch;
+            });
+
+            renderJobs(filteredJobs);
+        };
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderJobs(jobs); // Render all jobs initially
+            document.getElementById('search').addEventListener('input', filterJobs); // Add search filter
+            document.getElementById('categoryFilter').addEventListener('change', filterJobs); // Add category filter
+        });
+    </script>
+</body>
+</html>

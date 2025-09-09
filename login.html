@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | WorkSphere</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .password-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .password-container input {
+      width: 100%;
+      padding-right: 40px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 16px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <form id="login-form" class="auth-form">
+      <h2>Login to WorkSphere</h2>
+      <input type="email" id="login-email" placeholder="Email" required />
+
+      <div class="password-container">
+        <input type="password" id="login-password" placeholder="Password" required />
+        <span id="toggle-password" class="toggle-password">👁️</span>
+      </div>
+
+      <button type="submit">Login</button>
+
+      <p class="reset-link">
+        <a href="#" id="reset-password">Forgot Password?</a>
+      </p>
+
+      <div class="social-login">
+        <p>Or login with</p>
+        <button type="button" class="google-btn" id="google-login">Google</button>
+        <button type="button" class="facebook-btn" id="facebook-login">Facebook</button>
+      </div>
+
+      <p class="switch-auth">Don't have an account? <a href="signup.html">Create one</a></p>
+    </form>
+  </div>
+
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="login.js"></script>
+</body>
+</html>

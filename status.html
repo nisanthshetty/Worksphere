@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Request Status</title>
+  <style>
+    .status-card {
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background: #f9f9f9;
+    }
+    .status {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .chat-link, .rate-link {
+      display: inline-block;
+      margin-top: 10px;
+      margin-right: 10px;
+      padding: 6px 12px;
+      background-color: #3498db;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+    .rate-link {
+      background-color: #2ecc71;
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Requests</h1>
+  <div id="status-container"></div>
+
+  <script type="module">
+    import {
+      auth,
+      db,
+      onAuthStateChanged,
+      collection,
+      query,
+      where,
+      onSnapshot
+    } from './firebase-config.js';
+
+    const container = document.getElementById("status-container");
+
+    function displayRequest(docSnap) {
+      const data = docSnap.data();
+      const id = docSnap.id;
+
+      const card = document.createElement("div");
+      card.className = "status-card";
+      card.innerHTML = `
+        <p><strong>To Freelancer:</strong> ${data.toEmail}</p>
+        <p><strong>Message:</strong> ${data.message}</p>
+        <p class="status">Status: ${data.status ? data.status.toUpperCase() : "PENDING"}</p>
+      `;
+
+      if (data.status === "accepted") {
+        const chatBtn = document.createElement("a");
+        chatBtn.href = `chat.html?freelancerId=${data.toUserId}&clientId=${data.fromUserId}`;
+        chatBtn.className = "chat-link";
+        chatBtn.innerText = "Chat Now";
+
+        const rateBtn = document.createElement("a");
+        rateBtn.href = `rating.html?freelancerId=${data.toUserId}&freelancerEmail=${encodeURIComponent(data.toEmail)}&freelancerName=${encodeURIComponent(data.toName || "Freelancer")}`;
+        rateBtn.className = "rate-link";
+        rateBtn.innerText = "Rate Freelancer";
+
+        card.appendChild(chatBtn);
+        card.appendChild(rateBtn);
+      }
+
+      container.appendChild(card);
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const q = query(
+          collection(db, "notifications"),
+          where("fromUserId", "==", user.uid)
+        );
+
+        onSnapshot(q, (snapshot) => {
+          container.innerHTML = "";
+          snapshot.forEach((docSnap) => {
+            displayRequest(docSnap);
+          });
+        });
+      } else {
+        container.innerHTML = "<p>Please log in to view your status.</p>";
+      }
+    });
+  </script>
+</body>
+</html>

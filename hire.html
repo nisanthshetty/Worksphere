@@ -1,0 +1,49 @@
+<!-- hire.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All Users</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    .user-card {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background: #f9f9f9;
+    }
+    .user-card h3 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+    .contact-btn {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .contact-btn:hover {
+      background: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <h1>All Users</h1>
+  <div id="freelancer-list"></div>
+
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="hire.js"></script>
+</body>
+</html>
